@@ -14,7 +14,10 @@ document.addEventListener('DOMContentLoaded' , () =>{
    const infoDisplay = document.querySelector('#info')
     const userSquares = []
     const computerSquares = []
+let isHorizontal =  true
+
    const width = 10
+
 
    //create board
    function createBoard(){
@@ -74,10 +77,105 @@ function generateShips(){
     let current = ship.directions[randomDirection]
     if(randomDirection ===0) direction = 1
     if(randomDirection === 1) direction = 10
-    let randomStart = Math.floor(Math.random() * computerSquares.length - (ship.directions[0].length * direction))
+    let randomStart = Math.abs(Math.floor(Math.random() * computerSquares.length - (ship.directions[0].length * direction)))
 
     const isTaken = current.some(index => computerSquares[randomStart + index].classList.contai)
+    const isAtRightEdge = current.some(index => (randomStart + index) % width === -1)
+    const isAtLeftEdge = current.some(index => (randomStart + index) % width === 0)
+   
+    if(!isTaken && !isAtRightEdge && !isAtLeftEdge) current.forEach(index => computerSquares[randomStart + index].classList.add('taken',ship.name))
+
+    else generate(ship)
+
+}
+generate(shipArray[0])
+generate(shipArray[1])
+generate(shipArray[2])
+generate(shipArray[3])
+generate(shipArray[4])
+
+//rotate the ships
+function rotate(){
+    if(isHorizontal){
+        destroyer.classList.toggle('destroyer-container-vertical')
+        submarine.classList.toggle('submarine-container-vertical')
+        cruiser.classList.toggle('cruiser-container-vertical')
+        battleship.classList.toggle('battleship-container-vertical')
+        carrier.classList.toggle('carrier-container-vertical')
+        isHorizontal = false
+        console.log(isHorizontal)
+        return
+     
+    }
+    
+        if(isHorizontal){
+            destroyer.classList.toggle('destroyer-container')
+            submarine.classList.toggle('submarine-container')
+            cruiser.classList.toggle('cruiser-container')
+            battleship.classList.toggle('battleship-container')
+            carrier.classList.toggle('carrier-container')
+            isHorizontal = true
+            console.log(isHorizontal)
+            
+            return
+        }
+        
+
+}
+rotateButton.addEventListener('click', rotate)
+
+//move around user ship
+ships.forEach(ship => ship.addEventListener('dragstart', dragStart))
+userSquares.forEach(square => square.addEventListener('dragstart' , dragStart))
+userSquares.forEach(square => square.addEventListener('dragover' , dragOver))
+userSquares.forEach(square => square.addEventListener('dragenter' , dragEnter))
+userSquares.forEach(square => square.addEventListener('dragleave' , dragLeave))
+userSquares.forEach(square => square.addEventListener('drop' , dragDrop))
+userSquares.forEach(square => square.addEventListener('dragend' , dragEnd))
+
+let selectedShipNameWithIndex
+let draggedShip
+let draggedShipLength
+
+
+
+ships.forEach(ship => ship.addEventListener('mousedown', (e) =>{
+  selectedShipNameWithIndex = e.target.id
+  console.log(selectedShipNameWithIndex)
+
+}))
+
+function dragStart(){
+    draggedShip = this
+    draggedShipLength = this.childNodes.length
+    console.log(draggedShip)
 }
 
+function dragOver(){
+    e.preventDefault()
+    
+}
+
+function dragEnter(){
+    e.preventDefault()
+    
+}
+
+function dragLeave(){
+    console.log('drag leave')
+    
+}
+
+function dragDrop(){
+   let shipNameWithLastId  = draggedShip.lastChild.id
+    let shipClass = shipNameWithLastId.slice(0,-2)
+    console.log(shipClass)
+    let lastShipIndex = shipNameWithLastId.substr(-1)
+}
+
+function dragEnd(){
+
+    
+}
 
 })
