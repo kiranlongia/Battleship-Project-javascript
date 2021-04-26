@@ -14,6 +14,7 @@
 .grid div{
     width: 40px;
     height: 40px;
+    
    
 }
 
@@ -23,6 +24,7 @@
     display: flex;
     flex-wrap: wrap;
     background-color: lightgreen;
+    margin: 20px;
 }
 
 .grid-display{
@@ -63,7 +65,7 @@
     background-color: pink;
     margin: 10px;
     display: flex;
-    flex-wrap: wrap;
+    
 }
 .cruiser-container{
     width: 120px;
